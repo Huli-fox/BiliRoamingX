@@ -14,13 +14,24 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        submodules: recursive  # 自动递归克隆子模块
+        submodules: recursive
 
-    - name: Setup Java
-      uses: actions/setup-java@v3
+    # 重要：自动生成 gradlew（如果项目缺失）
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v3
       with:
-        java-version: '17'
-        distribution: 'temurin'
+        gradle-version: current
 
-    - name: Make gradlew executable
-      run: chmod +x grad
+    - name: Validate Gradle Wrapper
+      run: ./gradlew help --no-daemon  # 验证gradlew可用性
+
+    - name: Build with Gradle
+      run: ./gradlew dist
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-output
+        path: |
+          build/distributions/*
+          build/libs/*
