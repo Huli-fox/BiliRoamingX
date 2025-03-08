@@ -11,27 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code with submodules
+    - name: Checkout code
       uses: actions/checkout@v4
       with:
-        submodules: recursive
+        submodules: recursive  # 自动递归克隆子模块
 
-    - name: Set up JDK 17
+    - name: Setup Java
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
 
     - name: Make gradlew executable
-      run: chmod +x gradlew
-
-    - name: Build with Gradle
-      run: ./gradlew dist
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-output
-        path: |
-          build/distributions/*
-          build/libs/*
+      run: chmod +x grad
